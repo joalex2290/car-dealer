@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Ventas - MG Concesionario{% endblock %}
+
+{% block active_ventas %}active{% endblock %}
+
+{% block extra_js %}
+<script>
+	$('#add').click(function() {
+		var form_idx = $('#id_form-TOTAL_FORMS').val();
+		$('#sales-lines > tbody:last-child').append($('#empty_form table tbody').html().replace(/__prefix__/g, form_idx));
+		$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+	});
+	$('#remove').click(function() {
+		var form_idx = $('#id_form-TOTAL_FORMS').val();
+		$('#sales-lines').each(function(){
+			if($('tbody>tr', this).length > 1){
+				$('tbody tr:last', this).remove();
+				$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
+			}else {
+				return
+			}
+		});
+	});
+</script>
+
+{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="container">
+
+	<div class="widget widget-table action-table">
+
+		<div class="widget-header"> <i class="icon-cube"></i>
+			<h3>Venta</h3>
+			<a title="ADICIONAR LINEA" class="btn pull-right" style="margin-top:6px; margin-right:12px;" value="Add More" id="add" >
+				<i class="btn-icon-only icon-plus" style="margin-left:0px;"></i></a>			
+				<a title="QUITAR LINEA" class="btn pull-right" style="margin-top:6px; margin-right:12px;" value="Add More" id="remove" >
+				<i class="btn-icon-only icon-minus" style="margin-left:0px;"></i></a>
+			</div>
+
+			<table id="sales-lines" class="table-form table-bordered"cellspacing='0'>
+				<thead>
+					<tr>
+						<th>Articulo</th>
+						<th>Sucursal</th>
+						<th>Cantidad</th> 
+						<th>Precio</th>              
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{ ventalineaformset.management_form }}
+					{% for form in ventalineaformset %}
+					<tr>
+						<td>{{form.articulo}}</td>
+						<td>{{form.sucursal}}</td>  
+						<td>{{form.cantidad}}</td>
+						<td>{{form.precio}}</td>
+						<td>1</td> 
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+
+	<div id="empty_form" style="display:none;">
+		<table>
+			<tr>
+				<td>{{ ventalineaformset.empty_form.articulo}}</td>
+				<td>{{ ventalineaformset.empty_form.sucursal}}</td>  
+				<td>{{ ventalineaformset.empty_form.cantidad}}</td>
+				<td>{{ ventalineaformset.empty_form.precio}}</td>
+				<td>1</td> 
+			</tr>
+		</table>
+	</div>
+	{% endblock %}

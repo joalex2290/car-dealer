@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="es">
+	<meta charset="UTF-8">
+	<!--Optimizado para móvil -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<!-- Bootstrap Responsive CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-responsive.min.css' %}">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" >
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+
+	<title>{% block title %} {% endblock %}</title>
+
+</head>
+
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="/home/">MG Concesionario </a>
+				{%  if user.is_authenticated %}
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar">	</span>
+				</a>
+				<div class="nav-collapse">  
+					<ul class="nav pull-right">
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+							class="icon-user"></i> {{ user.username }} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Ver perfil</a></li>
+								<li><a href="/change-password/" data-toggle="modal" data-target="#change-user-pass">Cambiar contraseña</a></li>
+								<li><a href="/logout/">Cerrar sesión</a></li>
+							</ul>
+						</li>
+					</ul>
+					<form class="navbar-search pull-right">
+						<input type="text" class="search-query" placeholder="Buscar..." onfocus="if(this.value == 'Buscar...') {this.value=''}">
+					</form>
+				</div>
+				<!--/.nav-collapse --> 
+				{% endif %}     
+			</div>
+			<!-- /container --> 
+		</div>
+		<!-- /navbar-inner --> 
+	</div>
+	<!-- /navbar -->
+	{%  if user.is_authenticated %}
+	<div class="subnavbar">
+		<div class="subnavbar-inner">
+			<div class="container">
+				<ul class="mainnav">
+					<li class="{% block active_home %}{% endblock %}"><a href="/home/"><i class="icon-dashboard"></i><span>Inicio</span> </a> </li>
+
+                    {%  if user.is_superuser or user.profile.rol = 'Gerente' %}
+					<li class="dropdown {% block active_gestion %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-cogs"></i><span>Gestión</span> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/manager/users/">Usuarios</a></li>
+							<li><a href="/manager/sucursales/">Sucursales</a></li>
+							<li><a href="/manager/fabricantes/">Fabricantes</a></li>
+						</ul>
+					</li>
+					<li class="dropdown {% block active_inventario %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-dropbox"></i><span>Inventario</span> <b class="caret"></b></a>
+						<ul class="dropdown-menu">						    
+							<li><a href="/inventory/articulos/">Articulos</a></li>
+							<li><a href="/inventory/stocks/">Gestion de stock</a></li>
+							<li><a href="#">Transferencia de stock</a></li>
+						</ul>
+					</li>
+					<li class="{% block active_reportes %}{% endblock %}"><a href="#"><i class="icon-bar-chart"></i><span>Reportes</span> </a> </li>
+					{% endif %}
+
+					{%  if user.is_superuser or user.profile.rol = 'Vendedor' %}
+					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-tags"></i><span>Ventas</span> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="/sales/venta/add/">Cotización</a></li>
+							<li><a href="#">Pedido de venta</a></li>
+						</ul>
+					</li>
+					{% endif %}
+
+					{%  if user.is_superuser or user.profile.rol = 'Jefe Taller' %}
+					<li class="dropdown {% block active_taller %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-wrench"></i><span>Taller</span> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Solicitud de repuestos</a></li>
+							<li><a href="#">Orden de reparación</a></li>
+						</ul>
+					</li>
+					{% endif %}
+
+				</ul>
+			</div>
+			<!-- /container --> 
+		</div>
+		<!-- /subnavbar-inner --> 
+	</div>
+	<!-- /subnavbar -->
+	{% endif %}
+
+	{% block content %}	{% endblock %}
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+
+	<!-- Bootstrap -->
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+	{% block extra_js %} {% endblock %}
+
+	<!-- Change User Pass Modal -->
+<div class="modal fade" id="change-user-pass">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div><!-- /.modal -->
+
+</body>
+</html>

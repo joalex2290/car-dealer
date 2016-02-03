@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Usuarios - MG Concesionario{% endblock %}
+
+{% block active_gestion %}active{% endblock %}
+
+{% block extra_js %}
+<script>
+	$('#onoff-user').on('show.bs.modal', function(e) {
+		$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+	});
+
+	$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<div class="widget widget-table action-table">
+
+		<div class="widget-header"> <i class="icon-group"></i>
+			<h3>Usuarios</h3>
+			<a title="CREAR USUARIO" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_user' %}" data-toggle="modal" data-target="#create-user">
+				<i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
+			</a>
+		</div>
+
+		<!-- /widget-header -->
+		<div class="widget-content">
+
+			<table class="table table-striped table-bordered" style="max-width:100%;">
+				<thead>
+					<tr>
+						<th>Nombre de Usuario</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Email</th>
+						<th>Telefono</th>				
+						<th>Rol</th>
+						<th>Sucursal</th>
+						<th>Activo</th>
+						<th>Opciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for users in object_list %}
+					<tr>
+					{%  if users.username = 'admin' %}
+					{% else %}
+						<td>{{users.username}}</td>
+						<td>{{users.profile.nombre}}</td>
+						<td>{{users.profile.apellido}}</td>
+						<td>{{users.profile.email}}</td>
+						<td>{{users.profile.telefono}}</td>
+						<td>{{users.profile.rol}}</td>
+						<td>{{users.profile.sucursal.nombre}}</td>
+						<td style ="text-align: center;">{% if users.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
+						<td style ="word-break:break-all;" class="td-actions">
+							<a title="CAMBIAR CONTRASEÑA" href="/manager/user/change-pass/{{users.id}}/" class="btn btn-info" data-toggle="modal" data-target="#change-user-pass"><i class="btn-icon-only icon-key"> </i></a>
+							<a title="EDITAR USUARIO" class="btn btn-warning" href="/manager/user/edit/{{users.profile.id}}/" data-href="/manager/user/edit/{{users.profile.id}}/" data-toggle="modal" data-target="#edit-user" title="edit-user"><i class="btn-icon-only icon-pencil"> </i></a>
+
+							{%  if user.username = users.username %}
+							<a title="" href="#" class="btn btn-danger disabled" ><i class="btn-icon-only icon-eye-close"> </i></a>
+							{% else %}			
+							{%  if users.is_active %}
+							<a title="INACTIVAR USUARIO" href="#" class="btn btn-danger" data-href="{% url 'onoff_user' users.id %}" data-toggle="modal" data-target="#onoff-user"><i class="btn-icon-only icon-eye-close"> </i></a>
+							{%  else %}
+							<a title="ACTIVAR USUARIO" href="#" class="btn btn-success" data-href="{% url 'onoff_user' users.id %}" data-toggle="modal" data-target="#onoff-user"><i class="btn-icon-only icon-eye-open"> </i></a>
+							{%  endif %}
+							{%  endif %}
+						</td>
+						{%  endif %}
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- Create User Modal -->
+<div class="modal fade" id="create-user">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div><!-- /.modal -->
+
+<!-- Change User Pass Modal -->
+<div class="modal fade" id="change-user-pass">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div><!-- /.modal -->
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="edit-user">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div><!-- /.modal -->
+
+<!-- On Off User Modal -->
+<div class="modal fade" id="onoff-user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Confirmar acción</h4>
+			</div>
+			<div class="modal-body">
+				<p>¿Esta seguro de realizar esta acción?</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+				<a class="btn btn-primary btn-ok" href="{% url 'onoff_user' user.id %}">Aceptar</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+Iniciar Sesión - MG Concesionario
+{% endblock %}
+
+{% block content %}
+
+{%  if user.is_authenticated %}
+<div class="container clearfix">
+    Sesion iniciada como <h2>{{user.username}}</h2>
+    </div>
+{% else %}
+
+<div class="account-container">
+    <div class="content clearfix">
+        <form method="POST">
+            {%  csrf_token %}
+            <h1>Inicio de sesión</h1> 
+            <div class="login-fields">
+                <div class="field">
+                    <label for="username">Nombre de usuario:</label>
+                    <input type="text" id="username" name="username" value="" placeholder="Nombre de usuario" class="login username-field" />
+                </div> <!-- /field -->
+
+                <div class="field">
+                    <label for="password">Contraseǹa:</label>
+                    <input type="password" id="password" name="password" value="" placeholder="Contraseña" class="login password-field"/>
+                </div> <!-- /password -->
+            </div> <!-- /login-fields -->
+
+            <div class="login-actions">
+                <span class="login-checkbox">
+                    <input id="Field" name="Field" type="checkbox" class="field login-checkbox" value="First Choice" tabindex="4" />
+                    <label class="choice" for="Field">No cerrar sesión</label>
+                </span>
+
+                <button class="button btn btn-success btn-large">Ingresar</button>
+
+            </div> <!-- .actions -->
+        </form>
+    </div> <!-- /content -->
+</div> <!-- /account-container -->
+
+<div class="login-extra">
+    <p>¿Olvido la contraseña? <a href="#">Obtenga una nueva.</a></p>
+    <p>Si necesita una cuenta, porfavor pongase en contacto con el administrador del sistema.</p>
+</div> <!-- /login-extra -->
+{% endif %}
+
+{% endblock %}

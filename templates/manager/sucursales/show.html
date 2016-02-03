@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Sucursales - MG Concesionario{% endblock %}
+
+{% block active_gestion %}active{% endblock %}
+
+{% block extra_js %}
+<script> 
+$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="widget widget-table action-table">
+
+        <div class="widget-header"> <i class="icon-building"></i>
+            <h3>Sucursales</h3>
+            <a title="CREAR SUCURSAL" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_sucursal' %}" data-toggle="modal" data-target="#create-sucursal">
+                <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
+            </a>
+        </div>
+
+        <!-- /widget-header -->
+        <div class="widget-content">
+
+            <table class="table table-bordered table-hovered "cellspacing='0'>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Telefono</th>               
+                        <th>Direccion</th>
+                        <th>Ciudad</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sucursal in object_list %}
+                    <tr>
+                        <td>{{sucursal.nombre}}</td>
+                        <td>{{sucursal.telefono}}</td>
+                        <td>{{sucursal.direccion}}</td>
+                        <td>{{sucursal.ciudad}}</td>
+
+                        <td style ="word-break:break-all;" class="td-actions">
+                            <a title="EDITAR SUCURSAL" class="btn btn-warning">
+                                <i class="btn-icon-only icon-pencil" data-toggle="modal" href="{% url 'edit_sucursal' sucursal.id %}" data-target="#edit-sucursal" title="edit sucursal" data-tooltip> </i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create Sucursal Modal -->
+<div class="modal fade" id="create-sucursal">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+<!-- Edit Sucursal Modal -->
+<div class="modal fade" id="edit-sucursal">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+
+{% endblock %}
