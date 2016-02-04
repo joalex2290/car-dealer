@@ -6,12 +6,20 @@
 	<div class="modal-body">
 
 		{% csrf_token %}
+		{{ form.non_field_errors }}
 		{% for field in form %} 
 		<fieldset class="form-group">
 			<label for="{{ field.label }}"> 
 				{{ field.label }} 
 			</label> 
 			{{ field }} 
+			{% if field.errors %} 
+			<ul style="margin-left:0px;"> 
+				{% for error in field.errors %} 
+				<li class="icon-warning-sign" style="margin-left:0px; color:red;">&nbsp;<strong>{{ error|escape }}</strong></li> 
+				{% endfor %} 
+			</ul> 
+			{% endif %}
 		</fieldset> 
 		{% endfor %}
 	</div>
@@ -19,4 +27,8 @@
 	<div class="modal-footer">
 		<button type="submit" class="btn btn-primary" >Crear</button>
 	</form>
+	<script>
+		var form_options = { target: '#create-articulo-content' } 
+		$('#create-articulo-form').ajaxForm(form_options);
+	</script>
 </div>

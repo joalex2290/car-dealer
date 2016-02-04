@@ -6,10 +6,34 @@
 
 {% block extra_js %}
 <script>
+	
+	function calcula_total(){
+		var form_idx = $('#id_form-TOTAL_FORMS').val();
+		var total= 0;
+
+		for (i = 0; i < form_idx; i++) {
+			total= parseFloat($('#id_form-'+i+'-total_linea').val()) + total;
+		}
+
+		$('#id_venta-total').val(total);
+
+	}
+
+	$(document).on('keyup', function(event) {
+		var id = event.target.id;
+		var arr = id.split('-');
+		var num = arr[1];
+		var cantidad = $('#id_form-'+num+'-cantidad').val();
+		var precio =  $('#id_form-'+num+'-precio').val();
+		$('#id_form-'+num+'-total_linea').val(cantidad*precio);
+		calcula_total();
+	});
+
 	$('#add').click(function() {
 		var form_idx = $('#id_form-TOTAL_FORMS').val();
 		$('#sales-lines > tbody:last-child').append($('#empty_form table tbody').html().replace(/__prefix__/g, form_idx));
 		$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+		calcula_total();
 	});
 	$('#remove').click(function() {
 		var form_idx = $('#id_form-TOTAL_FORMS').val();
@@ -17,6 +41,7 @@
 			if($('tbody>tr', this).length > 1){
 				$('tbody tr:last', this).remove();
 				$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
+				calcula_total();
 			}else {
 				return
 			}
@@ -26,20 +51,48 @@
 
 {% endblock %}
 
-{% load humanize %}
 
 {% block content %}
 
+
 <div class="container">
 
-	<div class="widget widget-table action-table">
+	<div class="widget">
 
-		<div class="widget-header"> <i class="icon-cube"></i>
+		<div class="widget-header"> <i class="icon-shopping-cart"></i>
 			<h3>Venta</h3>
-			<a title="ADICIONAR LINEA" class="btn pull-right" style="margin-top:6px; margin-right:12px;" value="Add More" id="add" >
-				<i class="btn-icon-only icon-plus" style="margin-left:0px;"></i></a>			
-				<a title="QUITAR LINEA" class="btn pull-right" style="margin-top:6px; margin-right:12px;" value="Add More" id="remove" >
-				<i class="btn-icon-only icon-minus" style="margin-left:0px;"></i></a>
+		</div>
+
+
+		<div class="widget-content">
+
+			<form class="form-inline">
+
+				<div class="control-group">											
+					<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> ID</label>
+					<div class="controls">
+						{{ventaform.id_venta}}
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+				<div class="control-group ">											
+					<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Cliente</label>
+					<div class="controls">
+						{{ventaform.cliente}}
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->				
+				<div class="control-group ">											
+					<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Tipo</label>
+					<div class="controls">
+						{{ventaform.estado}}
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+				<div class="control-group ">											
+					<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Comentario</label>
+					<div class="controls">
+						{{ventaform.comentario}}
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+
 			</div>
 
 			<table id="sales-lines" class="table-form table-bordered"cellspacing='0'>
@@ -60,25 +113,34 @@
 						<td>{{form.sucursal}}</td>  
 						<td>{{form.cantidad}}</td>
 						<td>{{form.precio}}</td>
-						<td>1</td> 
+						<td>{{form.total_linea}}</td> 
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 
-
+			<div class="widget-header"> 
+				<a title="ADICIONAR LINEA" class="btn pull-left" style="margin-top:6px; margin-left:12px;" value="Add More" id="add" >
+					<i class="btn-icon-only icon-plus" style="margin-left:0px;"></i></a>			
+					<a title="QUITAR LINEA" class="btn pull-left" style="margin-top:6px; margin-left:12px;" value="Add More" id="remove" >
+						<i class="btn-icon-only icon-minus" style="margin-left:0px;"></i></a>
+						{{ventaform.total}}
+						<a title="CREAR VENTA" class="btn pull-right" style="margin-top:6px; margin-right:12px;"  >Crear</a>
+					</form>
+				</div>
+			</div>
 		</div>
-	</div>
 
-	<div id="empty_form" style="display:none;">
-		<table>
-			<tr>
-				<td>{{ ventalineaformset.empty_form.articulo}}</td>
-				<td>{{ ventalineaformset.empty_form.sucursal}}</td>  
-				<td>{{ ventalineaformset.empty_form.cantidad}}</td>
-				<td>{{ ventalineaformset.empty_form.precio}}</td>
-				<td>1</td> 
-			</tr>
-		</table>
-	</div>
-	{% endblock %}
+		<div id="empty_form" style="display:none;">
+			<table>
+				<tr>
+					<td>{{ ventalineaformset.empty_form.articulo}}</td>
+					<td>{{ ventalineaformset.empty_form.sucursal}}</td>  
+					<td>{{ ventalineaformset.empty_form.cantidad}}</td>
+					<td>{{ ventalineaformset.empty_form.precio}}</td>
+					<td>{{ ventalineaformset.empty_form.total_linea}}</td> 
+				</tr>
+			</table>
+		</div>
+
+		{% endblock %}

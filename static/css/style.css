@@ -18,6 +18,12 @@ textarea {
   font-family: 'Open Sans';
 }
 
+input[readonly]
+{
+    background-color:white;
+    text-align:right;
+}
+
 a:link { text-decoration: none; } 
 a:visited { text-decoration: none; } 
 a:hover { text-decoration: none; } 
@@ -73,12 +79,14 @@ a:active { text-decoration: underline; }
      display:inline-block;
      position:relative;
      border:none;
+     text-align:right;
 }
 .table-form td select {
      width: 100%; 
      height: 100%;
      box-sizing: border-box;
      border:none;
+     text-align:right;
 }
 
 

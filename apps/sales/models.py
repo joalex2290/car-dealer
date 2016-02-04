@@ -23,11 +23,11 @@ class Venta(models.Model):
 		)
 	id_venta = models.PositiveIntegerField()
 	cliente = models.ForeignKey('Cliente')
-	estado = models.PositiveIntegerField(max_length=1,choices=ESTADO)
+	estado = models.PositiveIntegerField(max_length=1,choices=ESTADO,default=1)
 	fecha = models.DateTimeField(auto_now=True,auto_now_add=True)
 	vendedor = models.ForeignKey(User)
 	comentario = models.CharField(max_length=50)
-	total = models.DecimalField(max_digits=15, decimal_places=2)
+	total = models.DecimalField(max_digits=20,decimal_places=2)
 
 	def __unicode__(self):
 		return self.id_venta
@@ -35,9 +35,10 @@ class Venta(models.Model):
 class VentaLinea(models.Model):
 	id_venta = models.PositiveIntegerField()
 	articulo = models.ForeignKey('inventory.Articulo')
-	cantidad = models.PositiveIntegerField()
-	precio = models.DecimalField(max_digits=15, decimal_places=2)
 	sucursal = models.ForeignKey('manager.Sucursal')
+	cantidad = models.PositiveIntegerField()
+	precio = models.DecimalField(max_digits=20,decimal_places=2)
+	total_linea = models.DecimalField(max_digits=20,decimal_places=2,default=0)
 
 	def save(self, *args, **kwargs):
 		transaccion = Transaccion(tipo=3,articulo=self.articulo,sucursal=self.sucursal,

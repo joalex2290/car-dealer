@@ -80,7 +80,7 @@
 					{% endif %}
 
 					{%  if user.is_superuser or user.profile.rol = 'Vendedor' %}
-					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-tags"></i><span>Ventas</span> <b class="caret"></b></a>
+					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-money"></i><span>Ventas</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="/sales/venta/add/">Cotización</a></li>
 							<li><a href="#">Pedido de venta</a></li>
@@ -110,6 +110,9 @@
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+
+    <!-- jQuery Form Library-->
+	<script src="http://malsup.github.com/jquery.form.js"></script>
 
 	<!-- Bootstrap -->
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
