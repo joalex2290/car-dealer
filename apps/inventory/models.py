@@ -31,7 +31,7 @@ class Articulo(models.Model):
     mostrarImagen.allow_tags = True
 
     def __unicode__(self):
-        return self.descripcion
+        return self.codigo + ' - ' + self.descripcion + ' ' + str(self.modelo)
 
 class Stock(models.Model):
     articulo = models.ForeignKey('Articulo')

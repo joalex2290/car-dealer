@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^articulo/create/', views.ArticuloCreateView.as_view(), name='create_articulo'),
     url(r'^articulo/edit/(?P<pk>[-\w]+)/', views.ArticuloUpdateView.as_view(), name='edit_articulo'),
     url(r'^articulo/onoff/(?P<pk>[-\w]+)/', views.OnOffArticulo.as_view(), name="onoff_articulo"),
+    url(r'^articulo/success/', views.Success.as_view(), name="success"),
 )

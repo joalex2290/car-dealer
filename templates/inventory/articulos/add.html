@@ -28,7 +28,12 @@
 		<button type="submit" class="btn btn-primary" >Crear</button>
 	</form>
 	<script>
-		var form_options = { target: '#create-articulo-content' } 
-		$('#create-articulo-form').ajaxForm(form_options);
-	</script>
+		var form_options = { target: '#create-articulo-content', error:function() {
+			$('#create-articulo').modal('hide');
+			window.location.reload(true);
+		}
+	} 
+
+	$('#create-articulo-form').ajaxForm(form_options);
+</script>
 </div>

@@ -21,7 +21,6 @@ class ArticuloCreateView(CreateView):
     model = Articulo
     form_class = ArticuloForm
     template_name = 'inventory/articulos/add.html'
-    success_url = "/inventory/articulos/"
 
 class ArticuloUpdateView(UpdateView):
     model = Articulo
@@ -45,3 +44,6 @@ class OnOffArticulo(View):
             articulo.save()
 
         return HttpResponseRedirect('/inventory/articulos/')
+
+class Success(View):
+    template_name = 'inventory/articulos/success.html'
