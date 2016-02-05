@@ -12,25 +12,29 @@ from models import Articulo
 
 class ArticuloListView(ListView):
     model = Articulo
-    template_name = 'inventory/articulos/show.html' 
-
-    def get_queryset(self):
-        return Articulo.objects.all()  
+    template_name = 'inventory/articulos/show.html'  
 
 class ArticuloCreateView(CreateView):
     model = Articulo
     form_class = ArticuloForm
     template_name = 'inventory/articulos/add.html'
 
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
+
 class ArticuloUpdateView(UpdateView):
     model = Articulo
     form_class = ArticuloForm
     template_name = 'inventory/articulos/edit.html'
-    success_url = "/inventory/articulos/"
 
     def dispatch(self, *args, **kwargs):
         self.item_id = kwargs['pk']
         return super(ArticuloUpdateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
 
 class OnOffArticulo(View):
 

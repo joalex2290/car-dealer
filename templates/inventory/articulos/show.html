@@ -22,12 +22,11 @@
 
 <div class="container">
 
-<div id="success"></div>
     <div class="widget widget-table action-table">
 
         <div class="widget-header"> <i class="icon-cube"></i>
             <h3>Artículos</h3>
-            <a title="CREAR articuloS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_articulo' %}" data-toggle="modal" data-target="#create-articulo">
+            <a title="CREAR ARTICULOS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_articulo' %}" data-toggle="modal" data-target="#create-articulo">
                 <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
             </a>
         </div>
@@ -88,7 +87,7 @@
 <!-- Edit Articulo Modal -->
 <div class="modal fade" id="edit-articulo">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="edit-articulo-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 

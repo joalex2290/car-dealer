@@ -6,13 +6,14 @@ from django.contrib.auth.models import User
 # MODELO PERFIL EXTIENDE EL MODELO USUARIO POR DEFECTO
 
 class Perfil(models.Model):
-
+    ROLES= ((1, 'Gerente'),(2,'Vendedor'),(3,'Jefe Taller'))
+   
     user = models.OneToOneField(User)
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
-    telefono = models.CharField(max_length=15)
-    email = models.CharField(max_length=30)
-    rol = models.CharField(max_length=30)
+    telefono = models.PositiveIntegerField(max_length=15)
+    email = models.EmailField()
+    rol = models.PositiveIntegerField(max_length=30,choices=ROLES)
     sucursal = models.ForeignKey('Sucursal')
 
     class Meta:

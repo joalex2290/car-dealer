@@ -21,4 +21,6 @@ class VentasLineaForm(forms.ModelForm):
 	class Meta:
 		model = VentaLinea
 
+	articulo = forms.ModelChoiceField(widget=forms.Select,queryset=Articulo.objects.all().filter(is_active=True),initial=None)
+	sucursal = forms.ModelChoiceField(widget=forms.Select,queryset=Sucursal.objects.all().filter(is_active=True),initial=None)
 	total_linea = forms.IntegerField(widget=forms.NumberInput(attrs={'value':'0','readonly':'true'}))

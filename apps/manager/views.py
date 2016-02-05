@@ -14,40 +14,35 @@ class UserListView(ListView):
     model = User
     template_name = 'manager/users/show.html'
 
-class UserCreateView(TemplateView):
+class UserCreateView(CreateView):
+    model = Perfil
     userform = UserForm(prefix='user')
     perfilform = PerfilForm(prefix='perfil')
     template_name = 'manager/users/add.html'
+    success_url = '/manager/users/'
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
-        if 'userform' not in context:
-            context['userform'] = self.userform
-        if 'perfilform' not in context:
-            context['perfilform'] = self.perfilform
+        context['perfilform'] = self.perfilform
+        context['userform'] = self.userform
         return context
 
-    def post(self, request,*args,**kwargs):
-        userform = UserForm(request.POST, prefix='user')
-        perfilform = PerfilForm(request.POST, prefix='perfil')
-        if userform.is_valid() and perfilform.is_valid():
-            user = userform.save(commit=False)
-            user.set_password(userform.cleaned_data['password'])
-            user.save()
-            perfil = perfilform.save(commit=False)
-            perfil.user = user
-            perfil.save()
-        return HttpResponseRedirect('/manager/users/')
+    def form_valid(self, perfilform):
+        self.object = perfilform.save()
+        return render(self.request, 'manager/users/show.html', {'news': self.object})
 
 class PerfilUpdateView(UpdateView):
     model = Perfil
     form_class = PerfilForm
     template_name = 'manager/users/edit.html'
-    success_url = "/manager/users/"
 
     def dispatch(self, *args, **kwargs):
         self.item_id = kwargs['pk']
         return super(PerfilUpdateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
 
 class ChangeUserPassword(TemplateView):
     template_name = 'manager/users/change-password.html'
@@ -92,17 +87,24 @@ class SucursalCreateView(CreateView):
     model = Sucursal
     form_class = SucursalForm
     template_name = 'manager/sucursales/add.html'
-    success_url = "/manager/sucursales/"
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
 
 class SucursalUpdateView(UpdateView):
     model = Sucursal
     form_class = SucursalForm
     template_name = 'manager/sucursales/edit.html'
-    success_url = "/manager/sucursales/"
 
     def dispatch(self, *args, **kwargs):
         self.item_id = kwargs['pk']
         return super(SucursalUpdateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
+
 
 # Vistas Gestion Marcas
 
@@ -117,17 +119,23 @@ class FabricanteCreateView(CreateView):
     model = Fabricante
     form_class = FabricanteForm
     template_name = 'manager/fabricantes/add.html'
-    success_url = "/manager/fabricantes/"
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
 
 class FabricanteUpdateView(UpdateView):
     model = Fabricante
     form_class = FabricanteForm
     template_name = 'manager/fabricantes/edit.html'
-    success_url = "/manager/fabricantes/"
 
     def dispatch(self, *args, **kwargs):
         self.item_id = kwargs['pk']
         return super(FabricanteUpdateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
 
 class OnOffFabricante(View):
 

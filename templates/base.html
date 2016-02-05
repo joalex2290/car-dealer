@@ -61,7 +61,7 @@
 				<ul class="mainnav">
 					<li class="{% block active_home %}{% endblock %}"><a href="/home/"><i class="icon-dashboard"></i><span>Inicio</span> </a> </li>
 
-                    {%  if user.is_superuser or user.profile.rol = 'Gerente' %}
+                    {%  if user.is_superuser or user.perfil.rol = 1 %}
 					<li class="dropdown {% block active_gestion %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-cogs"></i><span>Gestión</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="/manager/users/">Usuarios</a></li>
@@ -79,7 +79,7 @@
 					<li class="{% block active_reportes %}{% endblock %}"><a href="#"><i class="icon-bar-chart"></i><span>Reportes</span> </a> </li>
 					{% endif %}
 
-					{%  if user.is_superuser or user.profile.rol = 'Vendedor' %}
+					{%  if user.is_superuser or user.perfil.rol = 2 %}
 					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-money"></i><span>Ventas</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="/sales/venta/add/">Cotización</a></li>
@@ -88,7 +88,7 @@
 					</li>
 					{% endif %}
 
-					{%  if user.is_superuser or user.profile.rol = 'Jefe Taller' %}
+					{%  if user.is_superuser or user.perfil.rol = 3 %}
 					<li class="dropdown {% block active_taller %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-wrench"></i><span>Taller</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="#">Solicitud de repuestos</a></li>

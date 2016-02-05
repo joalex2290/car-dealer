@@ -6,12 +6,20 @@
 	<div class="modal-body">
 
 		{% csrf_token %}
+		{{ form.non_field_errors }}
 		{% for field in form %} 
 		<fieldset class="form-group">
 			<label for="{{ field.label }}"> 
 				{{ field.label }} 
 			</label> 
-			{{ field }} 
+			{{ field }}
+			{% if field.errors %} 
+			<ul style="margin-left:0px;"> 
+				{% for error in field.errors %} 
+				<li class="icon-warning-sign" style="margin-left:0px; color:red;">&nbsp;<strong>{{ error|escape }}</strong></li> 
+				{% endfor %} 
+			</ul> 
+			{% endif %}
 		</fieldset> 
 		{% endfor %}
 	</div>
@@ -20,3 +28,14 @@
 		<button type="submit" class="btn btn-primary" >Actualizar</button>
 	</form>
 </div>
+
+{% block extra_js %}
+<script>
+	var form_options = { target: '#edit-articulo-content', success:function(response) {
+
+	}
+} 
+
+$('#edit-articulo-form').ajaxForm(form_options);
+</script>
+{% endblock %}

@@ -47,19 +47,19 @@
 				<tbody>
 					{% for users in object_list %}
 					<tr>
-					{%  if users.username = 'admin' %}
-					{% else %}
+						{%  if users.username = 'admin' %}
+						{% else %}
 						<td>{{users.username}}</td>
-						<td>{{users.profile.nombre}}</td>
-						<td>{{users.profile.apellido}}</td>
-						<td>{{users.profile.email}}</td>
-						<td>{{users.profile.telefono}}</td>
-						<td>{{users.profile.rol}}</td>
-						<td>{{users.profile.sucursal.nombre}}</td>
+						<td>{{users.perfil.nombre}}</td>
+						<td>{{users.perfil.apellido}}</td>
+						<td>{{users.perfil.email}}</td>
+						<td>{{users.perfil.telefono}}</td>
+						<td>{{users.perfil.rol}}</td>
+						<td>{{users.perfil.sucursal.nombre}}</td>
 						<td style ="text-align: center;">{% if users.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
 						<td style ="word-break:break-all;" class="td-actions">
 							<a title="CAMBIAR CONTRASEÑA" href="/manager/user/change-pass/{{users.id}}/" class="btn btn-info" data-toggle="modal" data-target="#change-user-pass"><i class="btn-icon-only icon-key"> </i></a>
-							<a title="EDITAR USUARIO" class="btn btn-warning" href="/manager/user/edit/{{users.profile.id}}/" data-href="/manager/user/edit/{{users.profile.id}}/" data-toggle="modal" data-target="#edit-user" title="edit-user"><i class="btn-icon-only icon-pencil"> </i></a>
+							<a title="EDITAR USUARIO" class="btn btn-warning" href="/manager/user/edit/{{users.perfil.id}}/" data-href="/manager/user/edit/{{users.perfil.id}}/" data-toggle="modal" data-target="#edit-user" title="edit-user"><i class="btn-icon-only icon-pencil"> </i></a>
 
 							{%  if user.username = users.username %}
 							<a title="" href="#" class="btn btn-danger disabled" ><i class="btn-icon-only icon-eye-close"> </i></a>
@@ -84,7 +84,7 @@
 <!-- Create User Modal -->
 <div class="modal fade" id="create-user">
 	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content"></div>
+		<div id="create-user-content" class="modal-content"></div>
 	</div>
 </div><!-- /.modal -->
 
@@ -98,7 +98,7 @@
 <!-- Edit User Modal -->
 <div class="modal fade" id="edit-user">
 	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content"></div>
+		<div id="edit-user-content" class="modal-content"></div>
 	</div>
 </div><!-- /.modal -->
 

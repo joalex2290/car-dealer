@@ -2,24 +2,40 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel">Crear Usuario</h4>
 </div>
-<form action="{% url 'create_user' %}" method="POST" class="form">
+<form id = "create-user-form" action="{% url 'create_user' %}" method="POST" class="form">
     <div class="modal-body">
 
         {% csrf_token %}
+        {{ userform.non_field_errors }}
         {% for field in userform %} 
         <fieldset class="form-group">
             <label for="{{ field.label }}"> 
                 {{ field.label }} 
             </label> 
-            {{ field }} 
+            {{ field }}
+            {% if field.errors %} 
+            <ul style="margin-left:0px;"> 
+                {% for error in field.errors %} 
+                <li class="icon-warning-sign" style="margin-left:0px; color:red;">&nbsp;<strong>{{ error|escape }}</strong></li> 
+                {% endfor %} 
+            </ul> 
+            {% endif %}
         </fieldset> 
         {% endfor %}
-        {% for field in profileform %} 
+        {{ perfilform.non_field_errors }}
+        {% for field in perfilform %} 
         <fieldset class="form-group">
             <label for="{{ field.label }}"> 
                 {{ field.label }} 
             </label> 
-            {{ field }} 
+            {{ field }}
+            {% if field.errors %} 
+            <ul style="margin-left:0px;"> 
+                {% for error in field.errors %} 
+                <li class="icon-warning-sign" style="margin-left:0px; color:red;">&nbsp;<strong>{{ error|escape }}</strong></li> 
+                {% endfor %} 
+            </ul> 
+            {% endif %}
         </fieldset> 
         {% endfor %}
     </div>
@@ -28,3 +44,15 @@
         <button type="submit" class="btn btn-primary" >Crear</button>
     </form>
 </div>
+
+{% block extra_js %}
+<script>
+var form_options = { target: '#create-user-content', error:function() {
+        $('#create-user').modal('hide');
+        window.location.reload(true);
+    }
+} 
+
+$('#create-user-form').ajaxForm(form_options);
+</script>
+{% endblock %}

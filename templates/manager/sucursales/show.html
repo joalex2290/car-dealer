@@ -6,7 +6,7 @@
 
 {% block extra_js %}
 <script> 
-$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+    $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
 </script>
 {% endblock %}
 
@@ -60,14 +60,14 @@ $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.m
 <!-- Create Sucursal Modal -->
 <div class="modal fade" id="create-sucursal">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="create-sucursal-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 
 <!-- Edit Sucursal Modal -->
 <div class="modal fade" id="edit-sucursal">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="edit-sucursal-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 

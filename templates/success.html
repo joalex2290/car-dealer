@@ -1,0 +1,13 @@
+<div class="alert alert-success" style="margin-bottom:0px;">
+	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	<strong>Operacion Exitosa!</strong>
+</div>
+
+{% block extra_js %}
+<script>
+	setTimeout(function(){
+		$('#modal').modal('hide');
+	},10000);
+	window.location.reload(true);
+</script>
+{% endblock %}

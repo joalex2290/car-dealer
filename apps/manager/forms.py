@@ -36,17 +36,7 @@ class PerfilForm(forms.ModelForm):
                   'email': 'Email',                
                   'telefono': 'Teléfono',
                   'rol': 'Rol',
-                  'sucursal':'Sucursal',}
-        widgets = {
-            'nombre': forms.TextInput(attrs={'required': 'true'}),
-            'apellido': forms.TextInput(attrs={'required': 'true'}),
-            'email': forms.TextInput(attrs={'required': 'true'}),
-            'telefono': forms.TextInput(attrs={'required': 'True'}),
-        }
-
-    ROLES= (('Gerente', 'Gerente'),('Vendedor','Vendedor'),('Jefe Taller','Jefe Taller'))
-    rol = forms.ChoiceField(choices=ROLES, required=True, label='Rol')
-    sucursal = forms.ModelChoiceField(queryset=Sucursal.objects.all() , empty_label=None)    
+                  'sucursal':'Sucursal',}   
 
 class SucursalForm(forms.ModelForm):
 
@@ -57,17 +47,11 @@ class SucursalForm(forms.ModelForm):
                   'telefono': 'Teléfono',
                   'direccion': 'Dirección',
                   'ciudad': 'Ciudad',}
-        widgets = {
-        'nombre': forms.TextInput(attrs={'required': 'true'}),
-        'telefono': forms.TextInput(attrs={'required': 'true'}),
-        'direccion': forms.TextInput(attrs={'required': 'true'}),
-        'ciudad': forms.TextInput(attrs={'required': 'true'}),}
+
 
 class FabricanteForm(forms.ModelForm):
 
     class Meta:
         model = Fabricante
         fields = ['nombre',]
-        labels = {'nombre':'Nombre', }
-        widgets = {
-        'nombre': forms.TextInput(attrs={'required': 'true'}),}
+        labels = {'nombre':'Nombre',}

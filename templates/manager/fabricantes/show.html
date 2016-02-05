@@ -10,7 +10,7 @@
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
     });
 
-$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+    $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
 </script>
 {% endblock %}
 
@@ -22,7 +22,7 @@ $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.m
 
         <div class="widget-header"> <i class="icon-road"></i>
             <h3>Fabricantes</h3>
-            <a title="CREAR fabricanteS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_fabricante' %}" data-toggle="modal" data-target="#create-fabricante">
+            <a title="CREAR FABRICANTES" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_fabricante' %}" data-toggle="modal" data-target="#create-fabricante">
                 <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
             </a>
         </div>
@@ -44,7 +44,7 @@ $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.m
                         <td>{{fabricante.nombre}}</td>
                         <td>{{fabricante.photo}}</td>
                         <td style ="word-break:break-all;" class="td-actions">
-                            <a title="EDITAR fabricante" class="btn btn-warning">
+                            <a title="EDITAR FABRICANTE" class="btn btn-warning">
                                 <i class="btn-icon-only icon-pencil" href="{% url 'edit_fabricante' fabricante.id %}" data-toggle="modal"  data-target="#edit-fabricante"> </i>
                             </a>
                         </td>
@@ -59,14 +59,14 @@ $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.m
 <!-- Create fabricante Modal -->
 <div class="modal fade" id="create-fabricante">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="create-fabricante-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 
 <!-- Edit fabricante Modal -->
 <div class="modal fade" id="edit-fabricante">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="edit-fabricante-content"class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 

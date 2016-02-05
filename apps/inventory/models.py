@@ -12,11 +12,18 @@ class Articulo(models.Model):
         (1, 'Vehiculo'),
         (2, 'Repuesto'),
     )
+    MODELO = (
+        (0000, 'No Aplica'),(2000, '2000'),(2001,'2001'),(2002, '2002'),
+        (2003,'2003'),(2004, '2004'),(2005,'2005'),(2006, '2006'),
+        (2007,'2007'),(2008, '2008'),(2009,'2009'),(2010, '2010'),
+        (2011,'2011'),(2012, '2012'),(2013,'2013'),(2014, '2014'),
+        (2015,'2015'),(2016, '2016'))
+
     codigo = models.CharField(max_length=10)
     tipo = models.PositiveIntegerField(max_length=1,choices=TIPO_ARTICULO)
     fabricante = models.ForeignKey('manager.Fabricante')
     descripcion = models.CharField(max_length=50)
-    modelo = models.PositiveIntegerField(max_length=4, help_text='YYYY')
+    modelo = models.PositiveIntegerField(max_length=4, choices=MODELO)
     costo = models.DecimalField(max_digits=12, decimal_places=2)
     imagen = models.ImageField(upload_to='imagenes_articulos')
     is_active = models.BooleanField(default=True)
