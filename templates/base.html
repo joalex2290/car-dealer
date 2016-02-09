@@ -15,6 +15,10 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+	<!-- Angular -->
+	<script type="text/javascript" src="{% static 'js/angular.min.js' %}"></script>
+	<!-- Bootstrap UI -->
+	<script type="text/javascript" src="{% static 'js/ui-bootstrap.min.js' %}"></script>
 
 	<title>{% block title %} {% endblock %}</title>
 
@@ -106,15 +110,19 @@
 	<!-- /subnavbar -->
 	{% endif %}
 
+
+</body>
+</html>
+
 	{% block content %}	{% endblock %}
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 
     <!-- jQuery Form Library-->
-	<script src="http://malsup.github.com/jquery.form.js"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.form.min.js' %}"></script>
 
-	<!-- Bootstrap -->
+	<!-- Bootstrap JS -->
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 
 	{% block extra_js %} {% endblock %}
