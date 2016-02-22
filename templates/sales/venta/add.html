@@ -66,12 +66,21 @@
 
 		<div class="widget-content">
 
-			<form class="form-inline">
+			<form class="form-inline" action="{% url 'add_venta' %}" method="post">
+					{% csrf_token %}
+					{{ form.non_field_errors }}
+								{% if field.errors %} 
+			<ul style="margin-left:0px;"> 
+				{% for error in field.errors %} 
+				<li class="icon-warning-sign" style="margin-left:0px; color:red;">&nbsp;<strong>{{ error|escape }}</strong></li> 
+				{% endfor %} 
+			</ul> 
+			{% endif %}
 
 				<div class="control-group">											
 					<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> ID</label>
 					<div class="controls">
-						{{ventaform.id_venta}}
+						<input class="span1" id="id_venta-id_venta" name="venta-id_venta" readonly="true" type="number" value={{cod}}>
 					</div> <!-- /controls -->				
 				</div> <!-- /control-group -->
 				<div class="control-group ">											
@@ -109,6 +118,7 @@
 					{{ ventalineaformset.management_form }}
 					{% for form in ventalineaformset %}
 					<tr>
+					<input id="id_form-0-id_venta" min="0" name="form-0-id_venta" type="hidden" value={{cod}}>
 						<td>{{form.articulo}}</td>
 						<td>{{form.sucursal}}</td>  
 						<td>{{form.cantidad}}</td>
@@ -125,7 +135,7 @@
 					<a title="QUITAR LINEA" class="btn pull-left" style="margin-top:6px; margin-left:12px;" value="Add More" id="remove" >
 						<i class="btn-icon-only icon-minus" style="margin-left:0px;"></i></a>
 						{{ventaform.total}}
-						<a title="CREAR VENTA" class="btn pull-right" style="margin-top:6px; margin-right:12px;"  >Crear</a>
+						<button type="submit" class="btn pull-right" style="margin-top:6px; margin-right:12px;" >Crear</button>
 					</form>
 				</div>
 			</div>
@@ -134,6 +144,7 @@
 		<div id="empty_form" style="display:none;">
 			<table>
 				<tr>
+				    <input id="id_form-__prefix__-id_venta" min="0" name="form-__prefix__-id_venta" type="hidden" value={{cod}}>
 					<td>{{ ventalineaformset.empty_form.articulo}}</td>
 					<td>{{ ventalineaformset.empty_form.sucursal}}</td>  
 					<td>{{ ventalineaformset.empty_form.cantidad}}</td>

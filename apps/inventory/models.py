@@ -54,10 +54,8 @@ class Stock(models.Model):
 
 class Transaccion(models.Model):
     TIPO_TRANSACCION = (
-        (1, 'Entrada'),
-        (2, 'Salida'),
-        (3, 'Venta'),
-        (4, 'Reparacion'),
+        (1, 'Cargue'),
+        (2, 'Descargue'),
     )
     tipo = models.PositiveIntegerField(max_length=1,choices=TIPO_TRANSACCION)
     articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE)

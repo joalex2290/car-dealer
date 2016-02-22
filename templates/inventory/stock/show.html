@@ -6,9 +6,6 @@
 
 {% block extra_js %}
 <script> 
-    $('#onoff-stock').on('show.bs.modal', function(e) {
-        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    });
 
     $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); });
 
@@ -25,8 +22,8 @@
     <div class="widget widget-table action-table">
 
         <div class="widget-header"> <i class="icon-cube"></i>
-            <h3>Artículos</h3>
-            <a title="CREAR STOCK" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_stock' %}" data-toggle="modal" data-target="#create-stock">
+            <h3>Stock</h3>
+            <a title="GESTIONAR STOCK" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_stock' %}" data-toggle="modal" data-target="#create-stock">
                 <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
             </a>
         </div>
@@ -38,37 +35,22 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Tipo</th> 
                         <th>Fabricante</th>              
                         <th>Descripción</th>
                         <th>Modelo</th>
-                        <th>Costo</th>
-                        <th>Imagen</th>
-                        <th>Activo</th>
-                        <th>Opciones</th>
+                        <th>Sucursal</th>
+                        <th>Cantidad</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for stock in object_list %}
                     <tr>
-                        <td>{{stock.codigo}}</td>
-                        <td style ="text-align: center;">{%  if stock.tipo = 'V' %}<i class="icon-car"></i>{% else %}<i class="icon-wrench"></i>{% endif %}</td>
-                        <td>{{stock.fabricante}}</td>
-                        <td>{{stock.descripcion}}</td>
-                        <td>{%  if stock.tipo = 'V' %}{{stock.modelo}}{% else %}No Aplica{% endif %}</td>
-                        <td>$ {{stock.costo|floatformat:2|intcomma }}</td>
-                        <td></td>
-                        <td style ="text-align: center;">{% if stock.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
-                        <td style ="word-break:break-all;" class="td-actions">
-                            <a title="EDITAR stock" class="btn btn-warning">
-                                <i class="btn-icon-only icon-pencil" href="{% url 'edit_stock' stock.id %}" data-toggle="modal"  data-target="#edit-stock"> </i>
-                            </a>
-                            {%  if stock.is_active %}
-                            <a title="INACTIVAR stock" href="#" class="btn btn-danger" data-href="{% url 'onoff_stock' stock.id %}" data-toggle="modal" data-target="#onoff-stock"><i class="btn-icon-only icon-eye-close"> </i></a>
-                            {%  else %}
-                            <a title="ACTIVAR stock" href="#" class="btn btn-success" data-href="{% url 'onoff_stock' stock.id %}" data-toggle="modal" data-target="#onoff-stock"><i class="btn-icon-only icon-eye-open"> </i></a>
-                            {%  endif %}
-                        </td>
+                        <td>{{stock.articulo.codigo}}</td>
+                        <td>{{stock.articulo.fabricante}}</td>
+                        <td>{{stock.articulo.descripcion}}</td>
+                        <td>{{stock.articulo.modelo}}</td>
+                        <td>{{stock.sucursal}}</td>
+                        <td>{{stock.stock}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -80,35 +62,8 @@
 <!-- Create stock Modal -->
 <div class="modal fade" id="create-stock">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+        <div id="create-stock-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
-
-<!-- Edit stock Modal -->
-<div class="modal fade" id="edit-stock">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
-    </div>
-</div><!-- /.modal -->
-
-<!-- On Off stock Modal -->
-<div class="modal fade" id="onoff-stock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Confirmar acción</h4>
-            </div>
-            <div class="modal-body">
-                <p>¿Esta seguro de realizar esta acción?</p>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary btn-ok" href="{% url 'onoff_stock' user.id %}">Aceptar</a>
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 {% endblock %}

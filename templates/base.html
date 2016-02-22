@@ -77,17 +77,15 @@
 						<ul class="dropdown-menu">						    
 							<li><a href="/inventory/articulos/">Articulos</a></li>
 							<li><a href="/inventory/stocks/">Gestion de stock</a></li>
-							<li><a href="#">Transferencia de stock</a></li>
 						</ul>
 					</li>
-					<li class="{% block active_reportes %}{% endblock %}"><a href="#"><i class="icon-bar-chart"></i><span>Reportes</span> </a> </li>
 					{% endif %}
 
 					{%  if user.is_superuser or user.perfil.rol = 2 %}
 					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-money"></i><span>Ventas</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/sales/venta/add/">Cotización</a></li>
-							<li><a href="#">Pedido de venta</a></li>
+							<li><a href="#">Clientes</a></li>
+							<li><a href="/sales/venta/add/">Pedido de Cliente</a></li>
 						</ul>
 					</li>
 					{% endif %}
@@ -95,11 +93,11 @@
 					{%  if user.is_superuser or user.perfil.rol = 3 %}
 					<li class="dropdown {% block active_taller %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-wrench"></i><span>Taller</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Solicitud de repuestos</a></li>
 							<li><a href="#">Orden de reparación</a></li>
 						</ul>
 					</li>
 					{% endif %}
+					<li class="{% block active_reportes %}{% endblock %}"><a href="#"><i class="icon-bar-chart"></i><span>Reportes</span> </a> </li>
 
 				</ul>
 			</div>

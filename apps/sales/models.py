@@ -14,7 +14,7 @@ class Cliente(models.Model):
 	email = models.EmailField()
 
 	def __unicode__(self):
-		return u'%s' % self.cedula
+		return u'%s' % self.cedula + " - " + self.nombre +  " " +self.apellido
 
 class Venta(models.Model):
 	ESTADO = (
