@@ -21,28 +21,28 @@ class Venta(models.Model):
 		(1,'Cotizacion'),
 		(2, 'Venta'),
 		)
-	id_venta = models.PositiveIntegerField()
+	id_venta = models.PositiveIntegerField(max_length=10000)
 	cliente = models.ForeignKey('Cliente')
 	estado = models.PositiveIntegerField(max_length=1,choices=ESTADO,default=1)
 	fecha = models.DateTimeField(auto_now=True,auto_now_add=True)
 	vendedor = models.ForeignKey(User)
-	comentario = models.CharField(max_length=50)
+	comentario = models.CharField(max_length=50,null=True)
 	total = models.DecimalField(max_digits=20,decimal_places=2)
 
 	def __unicode__(self):
-		return self.id_venta
+		return u'%s' % self.id_venta
 
 class VentaLinea(models.Model):
 	id_venta = models.PositiveIntegerField()
 	articulo = models.ForeignKey('inventory.Articulo')
 	sucursal = models.ForeignKey('manager.Sucursal')
-	cantidad = models.PositiveIntegerField()
+	cantidad = models.PositiveIntegerField(max_length=1000)
 	precio = models.DecimalField(max_digits=20,decimal_places=2)
 	total_linea = models.DecimalField(max_digits=20,decimal_places=2,default=0)
 
 	def save(self, *args, **kwargs):
-		transaccion = Transaccion(tipo=3,articulo=self.articulo,sucursal=self.sucursal,
-			cantidad=self.cantidad,usuario=user)
+		transaccion = Transaccion(tipo=2,articulo=self.articulo,sucursal=self.sucursal,
+			cantidad=self.cantidad)
 		transaccion.save()
 		super(VentaLinea, self).save(*args, **kwargs)
 

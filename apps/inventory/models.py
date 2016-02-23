@@ -62,7 +62,7 @@ class Transaccion(models.Model):
     sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(null=0)
     fecha = models.DateTimeField(auto_now=True, auto_now_add=True)
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User,null=True)
     comentario = models.CharField(max_length=50, null=True)
 
     class Meta:
