@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Reparacion - MG Concesionario{% endblock %}
+
+{% block active_taller %}active{% endblock %}
+
+{% block extra_js %}
+<script> 
+    $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+</script>
+{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="widget widget-table action-table">
+
+        <div class="widget-header"> <i class="icon-wrench"></i>
+            <h3>Reparaciones</h3>
+            <a title="CREAR REPARACION" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_reparacion' %}" data-toggle="modal" data-target="#create-reparacion">
+                <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
+            </a>
+        </div>
+
+        <!-- /widget-header -->
+        <div class="widget-content">
+
+            <table class="table table-bordered table-hovered "cellspacing='0'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Mecanico</th>
+                        <th>Estado</th>
+                        <th>Servicio</th>
+                        <th>Costo Servicio</th>
+                        <th>Comentario</th>
+                        <th>Total</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reparacion in object_list %}
+                    <tr>
+                        <td>{{reparacion.id_reparacion}}</td>
+                        <td>{{reparacion.cliente}}</td>
+                        <td>{{reparacion.fecha}}</td>
+                        <td>{{reparacion.mecanico}}</td>
+                        <td>{{reparacion.estado}}</td>
+                        <td>{{reparacion.servicio}}</td>
+                        <td>{{reparacion.total_servicio}}</td>
+                        <td>{{reparacion.comentario}}</td>
+                        <td>$ {{reparacion.total|floatformat:2|intcomma }}</td>
+                        <td style ="word-break:break-all;" class="td-actions">
+                            <a href="{% url 'show_lineas_reparacion' reparacion.id %}" data-toggle="modal"  data-target="#detail-reparacion" title="DETALLAR REPARACION" class="btn btn-warning">
+                                <i class="btn-icon-only icon-eye-open"> </i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create reparacion Modal -->
+<div class="modal fade" id="create-reparacion">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="create-reparacion-content" class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+<!-- Detail reparacion Modal -->
+<div class="modal fade" id="detail-reparacion">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="detail-reparacion-content"class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+{% endblock %}

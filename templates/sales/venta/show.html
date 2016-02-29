@@ -1,19 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Articulos - MG Concesionario{% endblock %}
+{% block title %}Pedidos - MG Concesionario{% endblock %}
 
-{% block active_inventario %}active{% endblock %}
+{% block active_ventas %}active{% endblock %}
 
 {% block extra_js %}
 <script> 
-    $('#onoff-articulo').on('show.bs.modal', function(e) {
-        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    });
-
-    $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); });
-
+    $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
 </script>
-
 {% endblock %}
 
 {% load humanize %}
@@ -24,9 +18,9 @@
 
     <div class="widget widget-table action-table">
 
-        <div class="widget-header"> <i class="icon-cube"></i>
-            <h3>Artículos</h3>
-            <a title="CREAR articuloS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_articulo' %}" data-toggle="modal" data-target="#create-articulo">
+        <div class="widget-header"> <i class="icon-money"></i>
+            <h3>Pedidos</h3>
+            <a title="CREAR PEDIDO" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_venta' %}" data-toggle="modal" data-target="#create-venta">
                 <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
             </a>
         </div>
@@ -37,37 +31,28 @@
             <table class="table table-bordered table-hovered "cellspacing='0'>
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Tipo</th> 
-                        <th>Fabricante</th>              
-                        <th>Descripción</th>
-                        <th>Modelo</th>
-                        <th>Costo</th>
-                        <th>Imagen</th>
-                        <th>Activo</th>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Vendedor</th>
+                        <th>Comentario</th>
+                        <th>Total</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for articulo in object_list %}
+                    {% for venta in object_list %}
                     <tr>
-                        <td>{{articulo.codigo}}</td>
-                        <td style ="text-align: center;">{%  if articulo.tipo = 'V' %}<i class="icon-car"></i>{% else %}<i class="icon-wrench"></i>{% endif %}</td>
-                        <td>{{articulo.fabricante}}</td>
-                        <td>{{articulo.descripcion}}</td>
-                        <td>{%  if articulo.tipo = 'V' %}{{articulo.modelo}}{% else %}No Aplica{% endif %}</td>
-                        <td>$ {{articulo.costo|floatformat:2|intcomma }}</td>
-                        <td></td>
-                        <td style ="text-align: center;">{% if articulo.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
+                        <td>{{venta.id_venta}}</td>
+                        <td>{{venta.cliente}}</td>
+                        <td>{{venta.fecha}}</td>
+                        <td>{{venta.vendedor}}</td>
+                        <td>{{venta.comentario}}</td>
+                        <td>$ {{venta.total|floatformat:2|intcomma }}</td>
                         <td style ="word-break:break-all;" class="td-actions">
-                            <a title="EDITAR articulo" class="btn btn-warning">
-                                <i class="btn-icon-only icon-pencil" href="{% url 'edit_articulo' articulo.id %}" data-toggle="modal"  data-target="#edit-articulo"> </i>
+                            <a href="{% url 'show_lineas_ventas' venta.id %}" data-toggle="modal"  data-target="#detail-venta" title="DETALLAR VENTA" class="btn btn-warning">
+                                <i class="btn-icon-only icon-eye-open"> </i>
                             </a>
-                            {%  if articulo.is_active %}
-                            <a title="INACTIVAR articulo" href="#" class="btn btn-danger" data-href="{% url 'onoff_articulo' articulo.id %}" data-toggle="modal" data-target="#onoff-articulo"><i class="btn-icon-only icon-eye-close"> </i></a>
-                            {%  else %}
-                            <a title="ACTIVAR articulo" href="#" class="btn btn-success" data-href="{% url 'onoff_articulo' articulo.id %}" data-toggle="modal" data-target="#onoff-articulo"><i class="btn-icon-only icon-eye-open"> </i></a>
-                            {%  endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -77,38 +62,18 @@
     </div>
 </div>
 
-<!-- Create Articulo Modal -->
-<div class="modal fade" id="create-articulo">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+<!-- Create Venta Modal -->
+<div class="modal fade" id="create-venta">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="create-venta-content" class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 
-<!-- Edit Articulo Modal -->
-<div class="modal fade" id="edit-articulo">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content"></div>
+<!-- Detail Venta Modal -->
+<div class="modal fade" id="detail-venta">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="detail-venta-content"class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
-
-<!-- On Off Articulo Modal -->
-<div class="modal fade" id="onoff-articulo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Confirmar acción</h4>
-            </div>
-            <div class="modal-body">
-                <p>¿Esta seguro de realizar esta acción?</p>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary btn-ok" href="{% url 'onoff_articulo' user.id %}">Aceptar</a>
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 {% endblock %}

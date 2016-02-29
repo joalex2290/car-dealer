@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Repuestos - MG Concesionario{% endblock %}
+
+{% block active_gestion %}active{% endblock %}
+
+{% block extra_js %}
+<script> 
+$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="widget widget-table action-table">
+
+        <div class="widget-header"> <i class="icon-cog"></i>
+            <h3>Repuestos</h3>
+            <a title="CREAR repuesto" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_repuesto' %}" data-toggle="modal" data-target="#create-repuesto">
+                <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
+            </a>
+        </div>
+
+        <!-- /widget-header -->
+        <div class="widget-content">
+
+            <table class="table table-bordered table-hovered "cellspacing='0'>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Marca</th>               
+                        <th>Precio</th>
+                        <th>Activo</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for repuesto in object_list %}
+                    <tr>
+                        <td>{{repuesto.nombre}}</td>
+                        <td>{{repuesto.distribuidor}}</td>
+                        <td>{{repuesto.precio}}</td>
+                        <td style ="text-align: center;">{% if repuesto.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
+                        <td style ="word-break:break-all;" class="td-actions">
+                            <a title="EDITAR repuesto" class="btn btn-warning">
+                                <i class="btn-icon-only icon-pencil" data-toggle="modal" href="{% url 'edit_repuesto' repuesto.id %}" data-target="#edit-repuesto" title="edit repuesto" data-tooltip> </i>
+                            </a>
+                                                     {%  if repuesto.is_active %}
+                            <a title="INACTIVAR repuesto" href="#" class="btn btn-danger" data-href="{% url 'onoff_repuesto' repuesto.id %}" data-toggle="modal" data-target="#onoff-repuesto"><i class="btn-icon-only icon-eye-close"> </i></a>
+                            {%  else %}
+                            <a title="ACTIVAR repuesto" href="#" class="btn btn-success" data-href="{% url 'onoff_repuesto' repuesto.id %}" data-toggle="modal" data-target="#onoff-repuesto"><i class="btn-icon-only icon-eye-open"> </i></a>
+                            {%  endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create repuesto Modal -->
+<div class="modal fade" id="create-repuesto">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+<!-- Edit repuesto Modal -->
+<div class="modal fade" id="edit-repuesto">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+
+{% endblock %}

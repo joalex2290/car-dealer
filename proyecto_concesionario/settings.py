@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'apps.manager',
     'apps.inventory',
     'apps.sales',
+    'apps.workshop',
+    'apps.consult',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Vehiculos - MG Concesionario{% endblock %}
+
+{% block active_inventario %}active{% endblock %}
+
+{% block extra_js %}
+<script> 
+    $('#onoff-vehiculo').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+
+$('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); }); 
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="widget widget-table action-table">
+
+        <div class="widget-header"> <i class="icon-car"></i>
+            <h3>Vehiculos</h3>
+            <a title="CREAR VEHICULOS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_vehiculo' %}" data-toggle="modal" data-target="#create-vehiculo">
+                <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
+            </a>
+        </div>
+
+        <!-- /widget-header -->
+        <div class="widget-content">
+
+            <table class="table table-bordered table-hovered "cellspacing='0'>
+                <thead>
+                    <tr>
+                        <th>Linea</th>
+                        <th>Marca</th>               
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Activo</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehiculo in object_list %}
+                    <tr>
+                        <td>{{vehiculo.linea}}</td>
+                        <td>{{vehiculo.marca}}</td>
+                        <td>{{vehiculo.modelo}}</td>
+                        <td>{{vehiculo.precio}}</td>
+                        <td>{{vehiculo.photo}}</td>
+                        <td style ="text-align: center;">{% if vehiculo.is_active %}<i class="icon-ok"> </i>{% else %} <i class="icon-remove"> </i>{% endif %}</td>
+                        <td style ="word-break:break-all;" class="td-actions">
+                            <a title="EDITAR VEHICULO" class="btn btn-warning">
+                                <i class="btn-icon-only icon-pencil" href="{% url 'edit_vehiculo' vehiculo.id %}" data-toggle="modal"  data-target="#edit-vehiculo"> </i>
+                            </a>
+                            {%  if vehiculo.is_active %}
+                            <a title="INACTIVAR VEHICULO" href="#" class="btn btn-danger" data-href="{% url 'onoff_vehiculo' vehiculo.id %}" data-toggle="modal" data-target="#onoff-vehiculo"><i class="btn-icon-only icon-eye-close"> </i></a>
+                            {%  else %}
+                            <a title="ACTIVAR VEHICULO" href="#" class="btn btn-success" data-href="{% url 'onoff_vehiculo' vehiculo.id %}" data-toggle="modal" data-target="#onoff-vehiculo"><i class="btn-icon-only icon-eye-open"> </i></a>
+                            {%  endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create Vehiculo Modal -->
+<div class="modal fade" id="create-vehiculo">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+<!-- Edit Vehiculo Modal -->
+<div class="modal fade" id="edit-vehiculo">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div><!-- /.modal -->
+
+<!-- On Off Vehiculo Modal -->
+<div class="modal fade" id="onoff-vehiculo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Confirmar acción</h4>
+            </div>
+            <div class="modal-body">
+                <p>¿Esta seguro de realizar esta acción?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

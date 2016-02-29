@@ -14,22 +14,31 @@ class UserListView(ListView):
     model = User
     template_name = 'manager/users/show.html'
 
-class UserCreateView(CreateView):
-    model = Perfil
+class UserCreateView(TemplateView):
     userform = UserForm(prefix='user')
     perfilform = PerfilForm(prefix='perfil')
     template_name = 'manager/users/add.html'
-    success_url = '/manager/users/'
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
-        context['perfilform'] = self.perfilform
-        context['userform'] = self.userform
+        if 'userform' not in context:
+            context['userform'] = self.userform
+        if 'perfilform' not in context:
+            context['perfilform'] = self.perfilform
         return context
 
-    def form_valid(self, perfilform):
-        self.object = perfilform.save()
-        return render(self.request, 'manager/users/show.html', {'news': self.object})
+    def post(self, request,*args,**kwargs):
+        userform = UserForm(request.POST, prefix='user')
+        perfilform = PerfilForm(request.POST, prefix='perfil')
+        if userform.is_valid() and perfilform.is_valid():
+            user = userform.save(commit=False)
+            user.set_password(userform.cleaned_data['password'])
+            user.save()
+            perfil = perfilform.save(commit=False)
+            perfil.user = user
+            perfil.save()
+        return render(self.request, 'success.html')
+
 
 class PerfilUpdateView(UpdateView):
     model = Perfil

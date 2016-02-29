@@ -1,0 +1,22 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<h4 class="modal-title" id="myModalLabel">Editar Vehiculo</h4>
+</div>
+<form action="{% url 'edit_vehiculo' vehiculo.id %}" method="post" id="edit-vehiculo-form" class="form">
+	<div class="modal-body">
+
+		{% csrf_token %}
+		{% for field in form %} 
+		<fieldset class="form-group">
+			<label for="{{ field.label }}"> 
+				{{ field.label }} 
+			</label> 
+			{{ field }} 
+		</fieldset> 
+		{% endfor %}
+	</div>
+
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary" >Actualizar</button>
+	</form>
+</div>

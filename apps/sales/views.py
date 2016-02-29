@@ -1,12 +1,30 @@
 from django.shortcuts import render, render_to_response
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import TemplateView, UpdateView, View, ListView, CreateView
+from django.views.generic import TemplateView, UpdateView, View, ListView, CreateView, DetailView
 from django.contrib.auth.models import User
 from models import Cliente, Venta, VentaLinea
 from forms import VentasForm, VentasLineaForm, VentaLineaFormset
 
 # Create your views here.
+
+class VentasListView(ListView):
+    model = Venta
+    template_name = 'sales/venta/show.html' 
+
+    def get_queryset(self):
+        return Venta.objects.all() 
+
+class VentaLineaListView(ListView):
+    model = VentaLinea
+    template_name = 'sales/venta/edit.html' 
+
+    def dispatch(self, *args, **kwargs):
+        self.item_id = kwargs['pk']
+        return super(VentaLineaListView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        return VentaLinea.objects.filter(id_venta=self.item_id) 
 
 class VentaCreateView(TemplateView):
     ventaform = VentasForm(prefix='venta')
@@ -36,8 +54,33 @@ class VentaCreateView(TemplateView):
             ventas.save()
             for form in lineasformset.forms:
                 todo_item = form.save(commit=False)
-                print todo_item.articulo
+                todo_item.id_venta = ventas
                 todo_item.save() 
-          
+        return HttpResponseRedirect('/sales/ventas/')
 
-        return HttpResponseRedirect('/sales/venta/add')
+class ClientesListView(ListView):
+    model = Cliente
+    template_name = 'sales/clientes/show.html' 
+
+    def get_queryset(self):
+        return Cliente.objects.all()  
+
+class ClienteCreateView(CreateView):
+    model = Cliente
+    template_name = 'sales/clientes/add.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')
+
+class ClienteUpdateView(UpdateView):
+    model = Cliente
+    template_name = 'sales/clientes/edit.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.item_id = kwargs['pk']
+        return super(ClienteUpdateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'success.html')

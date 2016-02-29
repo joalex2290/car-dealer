@@ -1,0 +1,5 @@
+git+https://github.com/django-nonrel/django
+pymongo
+git+https://github.com/django-nonrel/mongodb-engine
+git+https://github.com/django-nonrel/djangotoolbox
+pillow

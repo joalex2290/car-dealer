@@ -1,13 +1,14 @@
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h4 class="modal-title" id="myModalLabel">Nuevo Pedido de Cliente</h4>
+	<h4 class="modal-title" id="myModalLabel">Nueva Orden de Reparacion</h4>
 </div>
-<form action="{% url 'create_venta' %}" method="post" id="create-venta-form" class="form-inline">
+<form action="{% url 'create_reparacion' %}" method="post" id="create-reparacion-form" class="form-inline">
 	<div class="modal-body">
 
 		<div class="widget-content">
+
 			{% csrf_token %}
-			{{ ventaform.non_field_errors }}
+			{{ reparacionform.non_field_errors }}
 			{% if field.errors %} 
 			<ul style="margin-left:0px;"> 
 				{% for error in field.errors %} 
@@ -19,20 +20,32 @@
 			<div class="control-group">											
 				<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> ID</label>
 				<div class="controls">
-					<input class="span1" id="venta-id_venta" name="venta-id_venta" readonly="true" type="number" value={{cod}}>
-					<input id="venta-vendedor" name="venta-vendedor" value="{{user.id}}" type="hidden">
+					<input class="span1" id="id_reparacion-id_reparacion" name="reparacion-id_reparacion" readonly="true" type="number" value={{cod}}>
+					<input id="id_reparacion-mecanico" name="reparacion-mecanico" value="{{user.id}}" type="hidden">
 				</div> <!-- /controls -->				
 			</div> <!-- /control-group -->
 			<div class="control-group ">											
 				<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Cliente</label>
 				<div class="controls">
-					{{ventaform.cliente}}
+					{{reparacionform.cliente}}
 				</div> <!-- /controls -->				
-			</div> <!-- /control-group -->				
+			</div> <!-- /control-group -->	
+			<div class="control-group ">											
+				<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Servicio</label>
+				<div class="controls">
+					{{reparacionform.servicio}}
+				</div> <!-- /controls -->				
+			</div> <!-- /control-group -->
+			<div class="control-group ">											
+				<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Precio Servicio</label>
+				<div class="controls">
+					{{reparacionform.total_servicio}}
+				</div> <!-- /controls -->				
+			</div> <!-- /control-group -->			
 			<div class="control-group ">											
 				<label class="control-label" for="firstname"><i class="icon-arrow-right"></i> Comentario</label>
 				<div class="controls">
-					{{ventaform.comentario}}
+					{{reparacionform.comentario}}
 				</div> <!-- /controls -->				
 			</div> <!-- /control-group -->
 
@@ -49,10 +62,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				{{ ventalineaformset.management_form }}
-				{% for form in ventalineaformset %}
+				{{ reparacionlineaformset.management_form }}
+				{% for form in reparacionlineaformset %}
 				<tr>
-					<input id="id_ventalinea_set-0-id_venta" min="0" name="form-0-id_venta" type="hidden" value={{cod}}>
+					<input id="id_reparacionlinea_set-0-id_reparacion" min="0" name="form-0-id_reparacion" type="hidden" value={{cod}}>
 					<td>{{form.articulo}}</td>
 					<td>{{form.sucursal}}</td>  
 					<td>{{form.cantidad}}</td>
@@ -68,7 +81,7 @@
 				<i class="btn-icon-only icon-plus" style="margin-left:0px;"></i></a>			
 				<a title="QUITAR LINEA" class="btn pull-left" style="margin-top:6px; margin-left:12px;" value="Add More" id="remove" >
 					<i class="btn-icon-only icon-minus" style="margin-left:0px;"></i></a>
-					{{ventaform.total}}
+					{{reparacionform.total}}
 					<button type="submit" class="btn btn-primary pull-right" style="margin-top:6px; margin-right:12px;">Crear</button>
 				</form>
 			</div>
@@ -78,12 +91,12 @@
 	<div id="empty_form" style="display:none;">
 		<table>
 			<tr>
-				<input id="id_form-__prefix__-id_venta" min="0" name="form-__prefix__-id_venta" type="hidden" value={{cod}}>
-				<td>{{ ventalineaformset.empty_form.articulo}}</td>
-				<td>{{ ventalineaformset.empty_form.sucursal}}</td>  
-				<td>{{ ventalineaformset.empty_form.cantidad}}</td>
-				<td>{{ ventalineaformset.empty_form.precio}}</td>
-				<td>{{ ventalineaformset.empty_form.total_linea}}</td> 
+				<input id="id_form-__prefix__-id_reparacion" min="0" name="form-__prefix__-id_reparacion" type="hidden" value={{cod}}>
+				<td>{{ reparacionlineaformset.empty_form.articulo}}</td>
+				<td>{{ reparacionlineaformset.empty_form.sucursal}}</td>  
+				<td>{{ reparacionlineaformset.empty_form.cantidad}}</td>
+				<td>{{ reparacionlineaformset.empty_form.precio}}</td>
+				<td>{{ reparacionlineaformset.empty_form.total_linea}}</td> 
 			</tr>
 		</table>
 	</div>
@@ -95,14 +108,15 @@
 {% block extra_js %}
 <script>
 	function calcula_total(){
-		var form_idx = $('#id_ventalinea_set-TOTAL_FORMS').val();
+		var form_idx = $('#id_reparacionlinea_set-TOTAL_FORMS').val();
 		var total= 0;
+		total = total + parseFloat($('#id_reparacion-total_servicio').val());
 
 		for (i = 0; i < form_idx; i++) {
-			total= parseFloat($('#id_ventalinea_set-'+i+'-total_linea').val()) + total;
+			total= parseFloat($('#id_reparacionlinea_set-'+i+'-total_linea').val()) + total;
 		}
 
-		$('#id_venta-total').val(total);
+		$('#id_reparacion-total').val(total);
 
 	}
 
@@ -110,24 +124,24 @@
 		var id = event.target.id;
 		var arr = id.split('-');
 		var num = arr[1];
-		var cantidad = $('#id_ventalinea_set-'+num+'-cantidad').val();
-		var precio =  $('#id_ventalinea_set-'+num+'-precio').val();
-		$('#id_ventalinea_set-'+num+'-total_linea').val(cantidad*precio);
+		var cantidad = $('#id_reparacionlinea_set-'+num+'-cantidad').val();
+		var precio =  $('#id_reparacionlinea_set-'+num+'-precio').val();
+		$('#id_reparacionlinea_set-'+num+'-total_linea').val(cantidad*precio);
 		calcula_total();
 	});
 
 	$('#add').click(function() {
-		var form_idx = $('#id_ventalinea_set-TOTAL_FORMS').val();
+		var form_idx = $('#id_reparacionlinea_set-TOTAL_FORMS').val();
 		$('#sales-lines > tbody:last-child').append($('#empty_form table tbody').html().replace(/__prefix__/g, form_idx));
-		$('#id_ventalinea_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+		$('#id_reparacionlinea_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 		calcula_total();
 	});
 	$('#remove').click(function() {
-		var form_idx = $('#id_ventalinea_set-TOTAL_FORMS').val();
+		var form_idx = $('#id_reparacionlinea_set-TOTAL_FORMS').val();
 		$('#sales-lines').each(function(){
 			if($('tbody>tr', this).length > 1){
 				$('tbody tr:last', this).remove();
-				$('#id_ventalinea_set-TOTAL_FORMS').val(parseInt(form_idx) - 1);
+				$('#id_reparacionlinea_set-TOTAL_FORMS').val(parseInt(form_idx) - 1);
 				calcula_total();
 			}else {
 				return
@@ -135,10 +149,11 @@
 		});
 	});
 
-	var form_options = { target: '#create-venta-content', success:function(response) {}
-	}
-	$('#create-venta-form').ajaxForm(form_options);
-
+	var form_options = { 
+		target: '#create-reparacion-content',
+		success:function(response){}
+	} 
+	$('#create-reparacion-form').ajaxForm(form_options);
+	
 </script>
 {% endblock %}
-

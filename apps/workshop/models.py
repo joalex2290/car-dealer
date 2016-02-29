@@ -1,34 +1,35 @@
 from django.db import models
 from django.contrib.auth.models import User
 from apps.manager.models import Sucursal
+from apps.sales.models import Cliente
 from apps.inventory.models import Articulo, Transaccion
 
 # Create your models here.
 
-class Cliente(models.Model):
-	nombre = models.CharField(max_length=10)
-	apellido = models.CharField(max_length=10)
-	cedula = models.PositiveIntegerField(max_length=10)
-	telefono = models.PositiveIntegerField(max_length=10)
-	direccion = models.CharField(max_length=30)
-	email = models.EmailField()
-
-	def __unicode__(self):
-		return u'%s' % self.cedula + " - " + self.nombre +  " " +self.apellido
-
-class Venta(models.Model):
-	id_venta = models.PositiveIntegerField(max_length=10000)
-	cliente = models.ForeignKey('Cliente')
+class Reparacion(models.Model):
+	ESTADO = (
+		(1,'Revision'),
+		(2, 'Reparacion'),
+		(3, 'Limpieza'),
+		(2, 'Terminado'),
+		)
+	id_reparacion = models.PositiveIntegerField(max_length=10000)
+	cliente = models.ForeignKey(Cliente)
 	fecha = models.DateTimeField(auto_now=True,auto_now_add=True)
-	vendedor = models.ForeignKey(User)
+	mecanico = models.ForeignKey(User)
 	comentario = models.CharField(max_length=50,null=True)
+	servicio = models.CharField(max_length=1,choices=ESTADO,default=1)
+	total_servicio = models.DecimalField(max_digits=20,decimal_places=2)
 	total = models.DecimalField(max_digits=20,decimal_places=2)
 
-	def __unicode__(self):
-		return u'%s' % self.id_venta
+	class Meta:
+		verbose_name_plural = 'Reparaciones'
 
-class VentaLinea(models.Model):
-	id_venta = models.ForeignKey('Venta')
+	def __unicode__(self):
+		return u'%s' % self.id_reparacion
+
+class ReparacionLinea(models.Model):
+	id_reparacion = models.ForeignKey('Reparacion')
 	articulo = models.ForeignKey('inventory.Articulo')
 	sucursal = models.ForeignKey('manager.Sucursal')
 	cantidad = models.PositiveIntegerField(max_length=1000)
@@ -39,11 +40,11 @@ class VentaLinea(models.Model):
 		transaccion = Transaccion(tipo=2,articulo=self.articulo,sucursal=self.sucursal,
 			cantidad=self.cantidad)
 		transaccion.save()
-		super(VentaLinea, self).save(*args, **kwargs)
+		super(ReparacionLinea, self).save(*args, **kwargs)
 
 
 	def __unicode__(self):
-		return u'%s' % self.id_venta
+		return u'%s' % self.id_reparacion
 
 
 

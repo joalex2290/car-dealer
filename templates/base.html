@@ -19,6 +19,7 @@
 	<script type="text/javascript" src="{% static 'js/angular.min.js' %}"></script>
 	<!-- Bootstrap UI -->
 	<script type="text/javascript" src="{% static 'js/ui-bootstrap.min.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 
 	<title>{% block title %} {% endblock %}</title>
 
@@ -84,8 +85,8 @@
 					{%  if user.is_superuser or user.perfil.rol = 2 %}
 					<li class="dropdown {% block active_ventas %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-money"></i><span>Ventas</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Clientes</a></li>
-							<li><a href="/sales/venta/add/">Pedido de Cliente</a></li>
+							<li><a href="/sales/clientes/">Clientes</a></li>
+							<li><a href="/sales/ventas/">Pedidos</a></li>
 						</ul>
 					</li>
 					{% endif %}
@@ -93,7 +94,7 @@
 					{%  if user.is_superuser or user.perfil.rol = 3 %}
 					<li class="dropdown {% block active_taller %}{% endblock %}"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-wrench"></i><span>Taller</span> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Orden de reparación</a></li>
+							<li><a href="/workshop/reparaciones/">Orden de reparación</a></li>
 						</ul>
 					</li>
 					{% endif %}

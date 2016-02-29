@@ -5,6 +5,8 @@ admin.autodiscover()
 import apps.manager.urls
 import apps.inventory.urls
 import apps.sales.urls
+import apps.workshop.urls
+import apps.consult.urls
 from views import Home
 
 urlpatterns = patterns('',
@@ -28,4 +30,8 @@ urlpatterns = patterns('',
     url(r'^inventory/', include(apps.inventory.urls)),
 
     url(r'^sales/', include(apps.sales.urls)),
+
+    url(r'^workshop/', include(apps.workshop.urls)),
+
+    url(r'^consulta/', include(apps.consult.urls)),
 )

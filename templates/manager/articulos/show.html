@@ -12,10 +12,6 @@
 
     $('body').on('hidden.bs.modal', '.modal', function () { $(this).removeData('bs.modal'); });
 
-    angular.module('myApp', ['ui.bootstrap'])
-    .controller("mainCtrl", function ($scope) {
-        $scope.selected = undefined;
-
 </script>
 
 {% endblock %}
@@ -30,7 +26,7 @@
 
         <div class="widget-header"> <i class="icon-cube"></i>
             <h3>Artículos</h3>
-            <a title="CREAR ARTICULOS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_articulo' %}" data-toggle="modal" data-target="#create-articulo">
+            <a title="CREAR articuloS" class="btn pull-right" style="margin-top:6px; margin-right:12px;" href="{% url 'create_articulo' %}" data-toggle="modal" data-target="#create-articulo">
                 <i class="btn-icon-only icon-plus" style="margin-left:0px;"></i>
             </a>
         </div>
@@ -56,7 +52,7 @@
                     {% for articulo in object_list %}
                     <tr>
                         <td>{{articulo.codigo}}</td>
-                        <td style ="text-align: center;">{%  if articulo.tipo = 1 %}<i class="icon-car"></i>{% else %}<i class="icon-wrench"></i>{% endif %}</td>
+                        <td style ="text-align: center;">{%  if articulo.tipo = 'V' %}<i class="icon-car"></i>{% else %}<i class="icon-wrench"></i>{% endif %}</td>
                         <td>{{articulo.fabricante}}</td>
                         <td>{{articulo.descripcion}}</td>
                         <td>{%  if articulo.tipo = 'V' %}{{articulo.modelo}}{% else %}No Aplica{% endif %}</td>
@@ -79,29 +75,19 @@
             </table>
         </div>
     </div>
-
-    {% verbatim %}
-
-    <div class="container">
-        <div ng-app="myApp" ng-controller="mainCtrl" class="row-fluid">
-        </div>
-    </div>
-
-    {% endverbatim %}
-
 </div>
 
 <!-- Create Articulo Modal -->
 <div class="modal fade" id="create-articulo">
     <div class="modal-dialog modal-sm" role="document">
-        <div id="create-articulo-content" class="modal-content"></div>
+        <div class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 
 <!-- Edit Articulo Modal -->
 <div class="modal fade" id="edit-articulo">
     <div class="modal-dialog modal-sm" role="document">
-        <div id="edit-articulo-content" class="modal-content"></div>
+        <div class="modal-content"></div>
     </div>
 </div><!-- /.modal -->
 
@@ -117,8 +103,8 @@
                 <p>¿Esta seguro de realizar esta acción?</p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary btn-ok" href="{% url 'onoff_articulo' user.id %}">Aceptar</a>
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                <a class="btn btn-primary btn-ok" href="{% url 'onoff_articulo' user.id %}">Aceptar</a>
             </div>
         </div>
     </div>
